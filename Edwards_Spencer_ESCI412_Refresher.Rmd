@@ -1,0 +1,90 @@
+---
+title: "R Refresher"
+author: Spencer Edwards
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Question 1
+
+```{r vector}
+L <- c(50, 55, 45, 30) #Create vector 1
+W <- c(3.6, 3.7, 3.3, 2.8) #Create vector 2
+MlutLW <- L*W #multiply vectors
+print(MlutLW)
+```
+## Question 2
+
+```{r palmerpenguins}
+library(palmerpenguins) # Load the dataset
+bl <- palmerpenguins::penguins$bill_length_mm #assign it a variable to make it
+#easier to work with
+meanbl <- mean(bl, na.rm = TRUE) #Calculate mean and discard NAs
+maxbl <- max(bl, na.rm = TRUE)
+minbl <- min(bl, na.rm = TRUE)
+print(meanbl)
+print(maxbl)
+print(minbl)
+```
+
+
+## Question 3
+```{r soledata}
+library(tidyverse) #Loads dplyr and ggplot
+library(plotly) #I thought I needed this to perform nls modeling, 
+#turns out I didn't
+```
+
+
+```{r Stats}
+soledata <- read.csv("Sole.Lengths.csv") #Load csv
+tl <- soledata$TL #assign variables 
+sl <- soledata$SL
+mean(tl)
+sd(tl)
+mean(sl)
+sd(sl)
+```
+
+## Question 4
+Total length refers to the length of the whole fish from the mouth to the end of the tail (when the tail is pinched together), whereas standard length is from the mouth the end of the fleshy part of the body (excluding the tail entirely).
+
+
+
+## Question 5
+```{r Plot}
+soledata %>% #pipe in data
+  ggplot(aes(x = TL, y = WT)) + geom_point() + 
+  geom_smooth(method = "lm", formula= (y ~ poly(x, 2)), se=FALSE) +
+  xlab("Total Length") + ylab("Weight") #this tells ggplot to set the aesthetic, 
+#make points and a polynomial regression
+
+```
+
+## Question 6
+The points form a quadratic function, and are very precise (they're close together).
+
+## Question 7
+```{r filter}
+subset.sole <- soledata %>%  #pipe data and select weight
+  select(WT) %>% #pipe again and select a subset from 35 to 60
+  slice(40:50)
+mean(subset.sole$WT)
+```
+
+## Question 8
+```{r hist}
+hist(subset.sole$WT)
+```
+
+The data appear to be right skewed, thus it's not a normal distribution. 
+
+## Question 9 
+1/5. I had some difficulty when plotting because I thought it was exponential at first, so I tried using ``` (method = nls, formula = y ~ exp(x)) ``` 
+however it was actually quadratic. I also had to remind myself how to use the ```dplyr()``` function ```slice()```. But overall, it was very simple. 
+
+## Question 10 
+Yes, I feel very confident in my ability. I hope I am able to help other people with their labs as well.
